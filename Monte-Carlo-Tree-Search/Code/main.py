@@ -12,9 +12,12 @@ class Main:
         pygame.display.set_caption('Monte Carlo Chess')
         self.game = Game()
 
-    def mainloop(self):
-        self.game.show_bg(self.screen)
+    def mainloop(self):       
+        game = self.game
+        screen = self.screen
         while True:
+            game.show_bg(screen)
+             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
