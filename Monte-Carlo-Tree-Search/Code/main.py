@@ -17,6 +17,7 @@ class Main:
         screen = self.screen
         while True:
             game.show_bg(screen)
+            game.draw_pieces(screen)
              
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
