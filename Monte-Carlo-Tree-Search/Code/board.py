@@ -16,6 +16,41 @@ class Board:
 
     #calculate valid moves of a piece
     def cal_moves(self, piece, row, col):
+        def pawn_moves():
+            if piece.moved:
+                steps = 1
+            else:
+                steps = 2
+
+            #vertical
+            start = row + piece.dir
+            end = row + (piece.dir * (1 + steps))
+            for possible_move_row in range(start, end, piece.dir):
+                if Square.in_range(possible_move_row):
+                    if self.squares[possible_move_row][col].isempty():
+                        initial = Square(row, col)
+                        final = Square(possible_move_row, col)
+                        move = Move(initial, final)
+                        piece.add_move(move)
+                    #blocked
+                    else:
+                        break
+                #not in range
+                else:
+                    break
+
+            #diagonal
+            possible_move_row = row + piece.dir
+            possible_move_cols = [col-1, col+1]
+            for possible_move_col in possible_move_cols:
+                if Square.in_range(possible_move_row, possible_move_col):
+                    if self.squares[possible_move_row][possible_move_col].has_rival_piece(piece.color):
+                        initial = Square(row, col)
+                        final = Square(possible_move_row, possible_move_col)
+                        move = Move(initial, final)
+                        piece.add_move(move)
+
+
         def knight_moves():
             possible_moves = [
                 (row-2, col+1),
@@ -38,7 +73,7 @@ class Board:
                         piece.add_move(move)
 
         if piece.name == 'pawn':
-            pass
+            pawn_moves()
 
         elif piece.name == 'knight':
             knight_moves()
