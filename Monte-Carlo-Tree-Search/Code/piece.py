@@ -21,12 +21,11 @@ class Piece:
             f'assets/images/imgs-{size}px/{self.color}_{self.name}.png')
         
     #draw available piece moves
-    def add_moves(self, move):
+    def add_move(self, move):
         self.moves.append(move)
 
 #Pawn class
 class Pawn(Piece):
-
     def __init__(self, color):
         self.dir = -1 if color == 'white' else 1
         super().__init__('pawn', color, 1.0)
