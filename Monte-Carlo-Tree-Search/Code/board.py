@@ -99,6 +99,28 @@ class Board:
                     possible_move_row = possible_move_row + row_incr
                     possible_move_col = possible_move_col + col_incr
 
+        def king_moves():
+            adjs = [
+                (row-1, col+0), #up
+                (row-1, col+1), #up-right
+                (row+0, col+1), #right 
+                (row+1, col+1), #down-right
+                (row+1, col+0), #down
+                (row+1, col-1), #down-left
+                (row+0, col-1), #left
+                (row-1, col-1), #up-left
+            ]
+
+            for possible_move in adjs:
+                possible_move_row, possible_move_col = possible_move
+
+                if Square.in_range(possible_move_row, possible_move_col):
+                    if self.squares[possible_move_row][possible_move_col].isempty_or_rival(piece.color):
+                        initial = Square(row, col)
+                        final = Square(possible_move_row, possible_move_col)
+                        move = Move(initial, final)
+                        piece.add_move(move)
+
         if piece.name == 'pawn':
             pawn_moves()
 
@@ -116,9 +138,9 @@ class Board:
         elif piece.name == 'rook':
             staright_line_moves([
                 (-1, 0), #up
-                (0, 1), #left
+                (0, 1), #right
                 (1, 0), #down
-                (0, -1) #right
+                (0, -1) #left
             ])
 
         elif piece.name == 'queen':
@@ -134,7 +156,7 @@ class Board:
             ])
 
         elif piece.name == 'king':
-            pass
+            king_moves()
 
     #arrange the squares
     def _create(self):       
@@ -167,3 +189,4 @@ class Board:
 
         # King
         self.squares[row_other][4] = Square(row_other, 4, King(color))
+        self.squares[2][4] = Square(2, 4, King(color))
