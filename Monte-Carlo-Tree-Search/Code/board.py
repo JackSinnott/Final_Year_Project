@@ -72,6 +72,33 @@ class Board:
                         move = Move(initial, final)
                         piece.add_move(move)
 
+        def staright_line_moves(increment):
+            for incr in increment:
+                row_incr, col_incr = incr
+                possible_move_row = row + row_incr
+                possible_move_col = col + col_incr
+
+                while True:
+                    if Square.in_range(possible_move_row, possible_move_col):
+                        initial = Square(row, col)
+                        final = Square(possible_move_row, possible_move_col)
+                        move = Move(initial, final)
+                        # no piece
+                        if self.squares[possible_move_row][possible_move_col].isempty():
+                            piece.add_move(move)
+                        #has enemy piece
+                        if self.squares[possible_move_row][possible_move_col].has_rival_piece(piece.color):
+                            piece.add_move(move)
+                            break
+                        #has team piece
+                        if self.squares[possible_move_row][possible_move_col].has_team_piece(piece.color):
+                            break
+                    else:
+                        break 
+
+                    possible_move_row = possible_move_row + row_incr
+                    possible_move_col = possible_move_col + col_incr
+
         if piece.name == 'pawn':
             pawn_moves()
 
@@ -79,13 +106,32 @@ class Board:
             knight_moves()
 
         elif piece.name == 'bishop':
-            pass
+            staright_line_moves([
+                (-1, 1), #upwards and right
+                (-1, -1), # upwards and left
+                (1, 1), # downwards and right
+                (1, -1) # downwards and left
+            ])
 
         elif piece.name == 'rook':
-            pass
+            staright_line_moves([
+                (-1, 0), #up
+                (0, 1), #left
+                (1, 0), #down
+                (0, -1) #right
+            ])
 
         elif piece.name == 'queen':
-            pass
+            staright_line_moves([
+                (-1, 1), #upwards and right
+                (-1, -1), # upwards and left
+                (1, 1), # downwards and right
+                (1, -1), # downwards and left
+                (-1, 0), #up
+                (0, 1), #left
+                (1, 0), #down
+                (0, -1) #right
+            ])
 
         elif piece.name == 'king':
             pass
